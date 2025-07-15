@@ -1,0 +1,24 @@
+name: Notify Annict to Slack
+
+on:
+  schedule:
+    - cron: "0 23 1 * *"
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t annict-notifier .
+
+      - name: Run notifier
+        run: |
+          docker run \
+            -e ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} \
+            -e SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }} \
+            annict-notifier
