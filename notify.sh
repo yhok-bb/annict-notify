@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-source .env
-
 MESSAGES=$(curl -H "Authorization: Bearer $ACCESS_TOKEN" \
 -X GET https://api.annict.com/v1/me/works?filter_status=wanna_watch \
   | jq -r '.works[].title' \
